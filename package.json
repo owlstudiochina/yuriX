@@ -1,0 +1,24 @@
+{
+  "name": "yurix",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "owlstudiochina",
+  "license": "ISC",
+  "description": "可在react中使用的简单的状态管理库",
+  "dependencies": {
+    "immer": "^10.1.1",
+    "react": "^18.0.0",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@testing-library/react": "^16.0.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
