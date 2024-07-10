@@ -45,7 +45,7 @@ export const createEffector = ()=>{
       })
     },
     stopAllPipes: ()=>{
-      stopOb.next();
+      stopOb.next(undefined);
     },
     isStopError: (err)=>{
       return err === stopErr

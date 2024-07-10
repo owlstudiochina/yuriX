@@ -1,12 +1,18 @@
 {
-  "name": "yurix",
-  "version": "0.0.1",
-  "main": "index.js",
+  "name": "@owlstudiochina/yurix",
+  "version": "0.0.2",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
   "author": "owlstudiochina",
   "license": "ISC",
+  "repository": "https://github.com/owlstudiochina/yuriX",
+  "bugs": "https://github.com/owlstudiochina/yuriX/issues",
+  "keywords": [
+    "react",
+    "state"
+  ],
   "description": "可在react中使用的简单的状态管理库",
   "dependencies": {
     "immer": "^10.1.1",

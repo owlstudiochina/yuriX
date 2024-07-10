@@ -1,6 +1,5 @@
-import {produce}  from "immer";
 import {Subject} from "rxjs";
-import {createEffector} from "./utils";
+import {produce} from "immer";
 
 
 /**
@@ -67,39 +66,3 @@ export const _createState = ()=>{
     }
   }
 }
-
-
-/**
- *
- * @param model 创建model的函数
- * @param {(any|function|undefined)} modelArgs model函数传入的参数
- */
-export const createModel = (model, modelArgs = undefined)=>{
-  const _modelArgs = typeof modelArgs === 'function'? modelArgs() :modelArgs;
-  const _modelFn = model(_modelArgs)
-
-  let _model;
-  let _state = _createState();
-
-  const isJustSetAndGet = ()=> _modelFn.length === 1;
-  const isNeedEffector = ()=> _modelFn.length === 2;
-
-  //  是使用{set,get}
-  if(isJustSetAndGet()) {
-    _model = _modelFn({set: _state.setState, get: _state.getState});
-  }else if(isNeedEffector()){// 使用 是使用{set,get}, effector
-    _model = _modelFn({set: _state.setState, get: _state.getState}, createEffector());
-  }else{
-    throw new Error("创建model的方法，参数只能是({set,get})或({set.get}, effector)")
-  }
-  _state.setState(_model.state);
-
-  return {
-    ..._model,
-    state: _state,
-
-    getState: ()=> _state.getState(),
-    subscribe: (cb)=> _state.subscribe(cb),
-  }
-}
-

@@ -1,6 +1,6 @@
 import {of, range} from "rxjs";
 import {concatMap, delay, tap} from "rxjs/operators";
-import {createEffector} from "../utils";
+import {createEffector} from "../utils/effector";
 
 
 describe("createEffector", ()=>{

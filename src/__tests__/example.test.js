@@ -118,7 +118,7 @@ describe("login", ()=>{
         return Promise.resolve({success: 'ok'})
       })
     }
-    const {result} = renderHook(()=> useModel(model, loginService));
+    const {result} = renderHook(()=> useModel(model(loginService)));
     const getState = result.current.getState;
     const {events: {inputNickname, inputPassword}, useCases: {submit}} = result.current;
 
@@ -138,7 +138,7 @@ describe("login", ()=>{
         return Promise.reject({error: {code: "INVALID"}})
       })
     }
-    const {result} = renderHook(()=> useModel(model, loginService));
+    const {result} = renderHook(()=> useModel(model(loginService)));
     const {events: {inputNickname, inputPassword}, useCases: {submit}} = result.current;
     const getState = result.current.getState;
 
