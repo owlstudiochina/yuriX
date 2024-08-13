@@ -6,7 +6,7 @@ import {produce} from "immer";
  * State
  * - 可获取当前的state
  * - 多种方式设置state
- * - 可订阅state变化（包含prev和next的state）
+ * - 可订阅state变化（包含prev和next的state）, 随时可取消订阅
  */
 export const _createState = ()=>{
 
@@ -57,6 +57,7 @@ export const _createState = ()=>{
     },
 
     // 订阅state变化。可获得变化前prev和变化后的next的state。
+    // 返回的方法调用则取消订阅
     subscribe: (cb)=>{
       const sub = _subOb.subscribe(([prev, next])=>{
         if(cb){cb(prev, next)}

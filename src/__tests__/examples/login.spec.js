@@ -1,7 +1,7 @@
 import {act, renderHook} from "@testing-library/react";
 import {of} from "rxjs";
-import {catchError, concatMap, delay, tap} from "rxjs/operators";
-import {useModel} from "../hooks";
+import {catchError, concatMap, tap} from "rxjs/operators";
+import {useModel} from "../../hooks";
 
 const Status = {
   None: "None", // 未初始化
@@ -17,6 +17,7 @@ const Errors = {
   invalidLoginError: new Error("昵称或密码有误")
 }
 
+// 定义登录model
 const model = ({login})=> ({set, get}, {pipe})=>{
 
   const states = {
@@ -111,21 +112,25 @@ const model = ({login})=> ({set, get}, {pipe})=>{
   }
 }
 
-describe("login", ()=>{
+describe("用户登录", ()=>{
   it('昵称和密码正确，登录成功', async () => {
+    // Mock:  登录成功服务
     const loginService = {
       login: jest.fn().mockImplementation((nickname, password)=>{
         return Promise.resolve({success: 'ok'})
       })
     }
-    const {result} = renderHook(()=> useModel(model(loginService)));
+    // Given:
+    const {result} = renderHook(()=> useModel(()=> model(loginService)));
     const getState = result.current.getState;
     const {events: {inputNickname, inputPassword}, useCases: {submit}} = result.current;
 
+    // When: 当输入正确昵称和密码，并提交
     await act(()=> inputNickname("hello-world"));
     await act(()=> inputPassword("123456"));
     await act(()=> submit())
 
+    // Then: 显示登录成功
     expect(getState().nickname).toBe("hello-world")
     expect(getState().password).toBe("123456")
     expect(getState().status).toBe(Status.LoginSucceed)
@@ -133,18 +138,22 @@ describe("login", ()=>{
   });
 
   it('昵称或密码错误，登录失败', async ()=> {
+    // Mock:  登录失败服务
     const loginService = {
       login: jest.fn().mockImplementation((nickname, password)=>{
         return Promise.reject({error: {code: "INVALID"}})
       })
     }
+    // Given:
     const {result} = renderHook(()=> useModel(model(loginService)));
     const {events: {inputNickname, inputPassword}, useCases: {submit}} = result.current;
     const getState = result.current.getState;
 
+    // When: 当输入错误昵称和密码，并提交
     await act(()=> inputNickname("hello-world"));
     await act(()=> inputPassword("12345678"));
 
+    // Then: 显示登录失败
     await expect(act(()=> submit())).rejects.toBe(Errors.invalidLoginError)
     expect(getState().status).toBe(Status.Idle)
   });

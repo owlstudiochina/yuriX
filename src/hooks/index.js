@@ -1,10 +1,15 @@
 import {useEffect, useMemo, useSyncExternalStore} from "react";
 import {Subject} from "rxjs";
-import {_createState} from "../state";
+import {_createState} from "../state/state";
 import {createEffector} from "../utils/effector";
 
 /**
- *
+ * 实现：
+ * - createModel创建model
+ * - model包含state和effector和sync
+ *    - state是model的状态
+ *    - effector方便配合rxjs操作符编写业务逻辑，
+ *    - sync是rxjs的Subject，用于发出组件已同步的state。
  */
 export const useModel = (createModelFunc)=>{
 
@@ -16,6 +21,7 @@ export const useModel = (createModelFunc)=>{
   useEffect(()=>{
     m.syncState(state);
   }, [state])
+
   useEffect(()=>{
     return ()=>{m.syncStop()}
   }, [])
@@ -36,6 +42,10 @@ const createModel = (createModelFunc)=>{
     }
   }
   checkCreateModelFuncIsFunc()
+
+  const isFuncReturn = ()=> createModelFunc.length === 0;
+
+  createModelFunc = isFuncReturn() ? createModelFunc() : createModelFunc;
 
   let _model;
   let _state = _createState();

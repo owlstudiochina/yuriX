@@ -1,7 +1,7 @@
 import {act, renderHook} from "@testing-library/react";
 import {useEffect} from "react";
 import {concatMap, delay, filter, take, tap} from "rxjs/operators";
-import {useModel} from "../hooks";
+import {useModel} from "../index";
 import {of} from "rxjs";
 
 
@@ -118,8 +118,6 @@ describe("useModel 组件每次同步state后通知到sync", ()=>{
     const clickTimes = 10;
     const counter  = ({set, get, sync}, {pipe})=>{
 
-
-
       return {
         state: {value: 0, step:  1},
         inc: ()=> pipe(
@@ -152,7 +150,6 @@ describe("useModel 组件每次同步state后通知到sync", ()=>{
     const value  = await new Promise(resolve => {
       setTimeout(()=>{
         resolve(_value)
-
       },100)
     })
     expect(value).toBe(clickTimes)
