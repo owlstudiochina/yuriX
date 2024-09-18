@@ -1,0 +1,7 @@
+
+
+{
+  "name": "@owlstudiochina/yurix/utils",
+  "main": "../lib/utils/index.js",
+  "sideEffects": false
+}
